@@ -1,4 +1,7 @@
 import os
+import time
+import itertools
+import string
 
 def get_files(path):
     """Returns a list of files in a directory"""
@@ -42,7 +45,6 @@ def send_discord_img(img, value, operation_time):
     print(webhook.execute())
 
 def get_train_data():
-    import time
     for file in get_files('./captcha'):
         """loop through the files in the captcha directory"""
         print(f"Processing {file}")
@@ -51,20 +53,22 @@ def get_train_data():
         is_vaild = True
         start = time.perf_counter()
         while is_vaild:
-            slow_value = slow_training()
             #slow_value = input("Enter the value: ") #for testing
-            ai_guess = get_sha1_value(slow_value)
-            if ai_guess == hash_value:
-                """if the ai guess is correct, relabel and move the file to the training directory"""
-                move_to_training_file(label_data(file, slow_value, hash_value))
-                print(f"[+] New data added {slow_value}_{hash_value}.png")
-                is_vaild = False
-                end = time.perf_counter() - start
-                print(f"Time taken: {end:.4f}s")
-                send_discord_img(f"{slow_value}_{hash_value}.png", slow_value, operation_time=end)
-        print(f"slow value: {slow_value}")
-        print(f"SHA1 value: {ai_guess}")
-        print("Hashvalue: ", hash_value)
+            for guess in itertools.product(string.ascii_lowercase + string.digits, repeat=5):
+                slow_value = ''.join(guess)
+                ai_guess = get_sha1_value((slow_value))
+                if ai_guess == hash_value:
+                    """if the ai guess is correct, relabel and move the file to the training directory"""
+                    move_to_training_file(label_data(file, slow_value, hash_value))
+                    print(f"[+] New data added {slow_value}_{hash_value}.png")
+                    is_vaild = False
+                    end = time.perf_counter() - start
+                    print(f"Time taken: {end:.4f}s")
+                    send_discord_img(f"{slow_value}_{hash_value}.png", slow_value, operation_time=end)
+                    break
+            print(f"slow value: {slow_value}")
+            print(f"SHA1 value: {ai_guess}")
+            print("Hashvalue: ", hash_value)
 
 if __name__ == "__main__":
     get_train_data()
