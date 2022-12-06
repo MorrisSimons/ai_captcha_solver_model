@@ -38,29 +38,32 @@ def run_training():
         random_state=42
     )
     train_dataset = dataset.ClassificationDataset(
-        image_path=train_imgs,
+        image_paths=train_imgs,
         targets=train_targets,
         resize=(config.IMAGE_HEIGHT,
                 config.IMAGE_WIDTH
-                ))
+                ),)
     test_dataset = dataset.ClassificationDataset(
-        image_path=train_imgs,
+        image_paths=train_imgs,
         targets=train_targets,
         resize=(config.IMAGE_HEIGHT,
                 config.IMAGE_WIDTH
-                ))
+                ),)
     train_loader = torch.utils.data.DataLoader(
         train_dataset,
         batch_size=config.BATCH_SIZE,
         num_workers=config.NUM_WORKERS,
-        shuffle = True
+        shuffle = True,
         )
     test_loader = torch.utils.data.DataLoader(
         train_dataset,
         batch_size=config.BATCH_SIZE,
         num_workers=config.NUM_WORKERS,
-        shuffle = False
+        shuffle = False,
         )
+    
+    model = ...
+
 if __name__ == "__main__":
     run_training()
 

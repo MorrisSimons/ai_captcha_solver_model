@@ -8,17 +8,17 @@ from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class ClassificationDataset:
-    def __init__(self, image_path, targets, resize=None):
-        self.image_path = image_path
+    def __init__(self, image_paths, targets, resize=None):
+        self.image_paths = image_paths
         self.targets = targets
         self.resize = resize
         self.aug = albumentations.Compose([albumentations.Normalize(always_apply=True)])
     
     def len(self):
-        return len(self.image_path)
+        return len(self.image_paths)
     
     def __getitem__(self, item):
-        image = Image.open(self.image_path[item].convert("RGB"))
+        image = Image.open(self.image_paths[item]).convert("RGB")
         targets = self.targets[item]
 
         if self.resize is not None:
