@@ -49,7 +49,6 @@ def get_train_data():
         """loop through the files in the captcha directory"""
         print(f"Processing {file}")
         hash_value = file.split(".png")[0][4:]
-        print(f"Hash value: {hash_value}")
         is_vaild = True
         start = time.perf_counter()
         while is_vaild:
@@ -66,9 +65,8 @@ def get_train_data():
                     print(f"Time taken: {end:.4f}s")
                     send_discord_img(f"{slow_value}_{hash_value}.png", slow_value, operation_time=end)
                     break
-            print(f"slow value: {slow_value}")
-            print(f"SHA1 value: {ai_guess}")
-            print("Hashvalue: ", hash_value)
+            if is_vaild == False:
+                break
 
 if __name__ == "__main__":
     get_train_data()
