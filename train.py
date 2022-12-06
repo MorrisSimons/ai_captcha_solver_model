@@ -75,6 +75,9 @@ def run_training():
         verbose=True,
         )
     for epoch in range(config.EPOCHS):
+        train_loss = engine.train_fn(model, train_loader, optimizer)
+        valid_preds, valid_loss = engine.eval_fn(model, test_loader)
+        
     """Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning
     models. Adam combines the best properties of the AdaGrad
     and RMSProp algorithms to provide an optimization algorithm that can handle sparse
