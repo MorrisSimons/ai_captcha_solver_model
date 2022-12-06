@@ -15,14 +15,6 @@ def get_sha1_value(data):
     encoded_data = data.encode()
     return hashlib.sha1(encoded_data).hexdigest()
 
-def slow_training():
-    """to get train data
-    combinations = 36**5 = 60,466,176
-    """
-    import random
-    import string
-    return ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(5))
-
 def label_data(file, slow_value,hashvalue):
     """labels the the files in the captcha directory"""
     print("Labeling data...")
@@ -46,7 +38,7 @@ def send_discord_img(img, value, operation_time):
 
 def log_time(time):
     with open("log.txt", "a") as f:
-        f.write(f"{time:.2f}\n")
+        f.write(f"{time:.2f},")
 
 def get_train_data():
     for file in get_files('./captcha'):
@@ -56,7 +48,6 @@ def get_train_data():
         is_vaild = True
         start = time.perf_counter()
         while is_vaild:
-            #slow_value = input("Enter the value: ") #for testing
             for guess in itertools.product(string.ascii_lowercase + string.digits, repeat=5):
                 slow_value = ''.join(guess)
                 ai_guess = get_sha1_value((slow_value))

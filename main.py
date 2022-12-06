@@ -1,5 +1,7 @@
 import hashlib
 import os
+import albumentations
+
 
 def get_files(path):
     """Returns a list of files in a directory"""
