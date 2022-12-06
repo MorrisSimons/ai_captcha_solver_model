@@ -9,6 +9,8 @@ from sklearn import metrics
 
 import config
 import dataset
+import engine
+from model import CaptchaModel
 
 def run_training():
     image_files = glob.glob(os.path.join(config.DATADIR, "*.png"))
@@ -62,7 +64,22 @@ def run_training():
         shuffle = False,
         )
     
-    model = ...
+    model = CaptchaModel(num_chars=len(lbl_enc.classes_))
+    model.to(config.DEVICE)
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.LEARNING_RATE)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        patience=5,
+        factor=0.8,
+        verbose=True,
+        )
+    for epoch in range(config.EPOCHS):
+    """Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning
+    models. Adam combines the best properties of the AdaGrad
+    and RMSProp algorithms to provide an optimization algorithm that can handle sparse
+    gradients on noisy problems."""
+
 
 if __name__ == "__main__":
     run_training()
