@@ -44,6 +44,10 @@ def send_discord_img(img, value, operation_time):
     webhook.add_embed(embed)
     print(webhook.execute())
 
+def log_time(time):
+    with open("log.txt", "a") as f:
+        f.write(f"{time:.2f}\n")
+
 def get_train_data():
     for file in get_files('./captcha'):
         """loop through the files in the captcha directory"""
@@ -64,6 +68,7 @@ def get_train_data():
                     end = time.perf_counter() - start
                     print(f"Time taken: {end:.4f}s")
                     send_discord_img(f"{slow_value}_{hash_value}.png", slow_value, operation_time=end)
+                    log_time(end)
                     break
             if is_vaild == False:
                 break
