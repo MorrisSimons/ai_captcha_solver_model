@@ -66,18 +66,5 @@ def get_train_data():
         print(f"SHA1 value: {ai_guess}")
         print("Hashvalue: ", hash_value)
 
-def multi_threading():
-    import threading
-    import time
-    threads = []
-    for worker in range(1):
-        print("Worker [", worker, "] is born...")
-        time.sleep(1)
-        thread = threading.Thread(target=get_train_data)
-        thread.start()
-        threads.append(thread)
-    for thread in threads:
-        print("Worker is joining...")
-        thread.join()
-
-multi_threading()
+if __name__ == "__main__":
+    get_train_data()
