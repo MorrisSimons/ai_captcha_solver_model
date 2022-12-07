@@ -2,6 +2,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+"""More info on torch https://pytorch.org/docs/stable/nn.html"""
+
 class CaptchaModel(nn.Module):
     def __init__(self, num_chars):
         super(CaptchaModel, self).__init__()
@@ -32,7 +34,8 @@ class CaptchaModel(nn.Module):
         x, _ = self.lstm(x)
         x = self.output(x)
         x = x.permute(1, 0, 2)
-
+        
+        """https://pytorch.org/docs/stable/nn.html#loss-functions"""
         if targets is not None:
             log_probs = F.log_softmax(x, 2)
             input_lengths = torch.full(
