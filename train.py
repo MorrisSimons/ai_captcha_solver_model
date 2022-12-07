@@ -1,6 +1,7 @@
 import os
 import glob
 import torch
+from torch import nn
 import numpy as np
 
 import albumentations
@@ -12,8 +13,6 @@ import config
 import dataset
 import engine
 from model import CaptchaModel
-
-from torch import nn
 
 def remove_duplicates(x):
     if len(x) < 2:
@@ -50,6 +49,11 @@ def decode_predictions(preds, encoder):
 
 def run_training():
     image_files = glob.glob(os.path.join(config.DATA_DIR, "*.png"))
+    """The glob module finds all the pathnames matching a specified pattern according
+    to the rules used by the Unix shell, although results are returned in arbitrary order.
+    No tilde expansion is done, but *, ?, and character ranges expressed with []
+    will be correctly matched. This is done by using the os.scandir() and fnmatch.fnmatch()
+    functions in concert, and not by actually invoking a subshell."""
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
