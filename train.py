@@ -8,6 +8,7 @@ import albumentations
 from sklearn import preprocessing
 from sklearn import model_selection
 from sklearn import metrics
+from tensorflow import keras
 
 import config
 import dataset
@@ -114,13 +115,17 @@ def run_training():
             current_preds = decode_predictions(vp, lbl_enc)
             valid_captcha_preds.extend(current_preds)
         combined = list(zip(test_targets_orig, valid_captcha_preds))
-        print(combined[:10])
+        if config.SHOW_TEST_SAMPLES != "":
+            batch = f":{config.SHOW_TEST_SAMPLES}"
+            print(combined[batch])
+        print(combined)
         test_dup_rem = [remove_duplicates(c) for c in test_targets_orig]
         accuracy = metrics.accuracy_score(test_dup_rem, valid_captcha_preds)
         print(
             f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss} Accuracy={accuracy}"
         )
         scheduler.step(test_loss)
+    torch.save(model.state_dict(), f"model_{epoch}.pt")
 
 if __name__ == "__main__":
     run_training()
