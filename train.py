@@ -48,10 +48,9 @@ def decode_predictions(preds, encoder):
         cap_preds.append(remove_duplicates(tp))
     return cap_preds
 
-
 def run_training():
     image_files = glob.glob(os.path.join(config.DATA_DIR, "*.png"))
-    targets_orig = [x.split("/")[-1][config.NAMEOFCAPTCHA] for x in image_files]
+    targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
 
