@@ -2,6 +2,8 @@ import os
 import time
 import itertools
 import string
+import config
+
 
 def get_files(path):
     """Returns a list of files in a directory"""
@@ -18,18 +20,18 @@ def get_sha1_value(data):
 def label_data(file, slow_value,hashvalue):
     """labels the the files in the captcha directory"""
     print("Labeling data...")
-    os.rename(f"./captcha/{file}", f"./captcha/{slow_value}_{hashvalue}.png")
+    os.rename(f"{config.UNLABELD_DIR}{file}", f"{config.UNLABELD_DIR}{slow_value}_{hashvalue}.png")
     return f"{slow_value}_{hashvalue}.png"
 
 def move_to_training_file(file):
     """moves the files to the training directory"""
     print("Moving to training directory...")
-    os.rename(f"./captcha/{file}", f"./training/{file}")
+    os.rename(f".{config.UNLABELD_DIR}{file}", f"{config.DATA_DIR}{file}")
 
 def send_discord_img(img, value, operation_time):
     from discord_webhook import DiscordWebhook, DiscordEmbed
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1049452576233500733/0RH04CSndynT4fv8ONAF3glEiTPSenCW_R40MNTuNYjBVCY_4TnDoIOb05XpphVm2NWM')
-    with open (f"./training/{img}", "rb") as f:
+    webhook = DiscordWebhook(url=config.DICSWEBHOOKAICHAT)
+    with open (f"{config.DATA_DIR}/{img}", "rb") as f:
         webhook.add_file(file=f.read(), filename="filename.png")
     embed = DiscordEmbed(title=f'{value}', description=f'New data added to training data, time {operation_time:.2f} sec', color=242424)
     embed.set_thumbnail(url=f"attachment://filename.png")
@@ -41,7 +43,7 @@ def log_time(time):
         f.write(f"{time:.2f},")
 
 def get_train_data():
-    for file in get_files('./captcha'):
+    for file in get_files({config.UNLABELD_DIR}):
         """loop through the files in the captcha directory"""
         print(f"Processing {file}")
         hash_value = file.split(".png")[0][:]
