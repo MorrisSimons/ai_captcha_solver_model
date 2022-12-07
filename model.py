@@ -2,20 +2,24 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-
 class CaptchaModel(nn.Module):
     def __init__(self, num_chars):
         super(CaptchaModel, self).__init__()
-        self.conv_1 = nn.Conv2d(3, 128, kernel_size=(3, 6), padding=(1, 1))
-        self.pool_1 = nn.MaxPool2d(kernel_size=(2, 2))
-        self.conv_2 = nn.Conv2d(128, 64, kernel_size=(3, 6), padding=(1, 1))
-        self.pool_2 = nn.MaxPool2d(kernel_size=(2, 2))
-        self.linear_1 = nn.Linear(1152, 64)
+        self.conv_1 = nn.Conv2d(3, 128, kernel_size=(3,3), padding=(1,1))
+        self.pool_1 = nn.MaxPool2d(kernel_size=(2,2))
+        self.conv_2 = nn.Conv2d(128, 64, kernel_size=(3,3), padding=(1,1))
+        self.pool_2 = nn.MaxPool2d(kernel_size=(2,2))
+
+        self.linear_1 = nn.Linear(1600, 64)
         self.drop_1 = nn.Dropout(0.2)
+
         self.lstm = nn.GRU(64, 32, bidirectional=True, num_layers=2, dropout=0.25, batch_first=True)
         self.output = nn.Linear(64, num_chars + 1)
+        """The Gated Recurrent Unit (GRU) is a type of Recurrent Neural Network (RNN) that, in certain cases,
+         has advantages over long short term memory (LSTM). GRU uses less memory and is faster than LSTM,
+          however, LSTM is more accurate when using datasets with longer sequences."""
 
-    def forward(self, images, targets=None):
+    def forward(self, images, targets = None):
         bs, _, _, _ = images.size()
         x = F.relu(self.conv_1(images))
         x = self.pool_1(x)
@@ -41,11 +45,9 @@ class CaptchaModel(nn.Module):
                 log_probs, targets, input_lengths, target_lengths
             )
             return x, loss
-
         return x, None
 
-
 if __name__ == "__main__":
-    cm = CaptchaModel(19)
-    img = torch.rand((1, 3, 50, 200))
+    cm = CaptchaModel(num_chars=19)
+    img = torch.rand(1, 3, 100, 300)
     x, _ = cm(img, torch.rand((1, 5)))

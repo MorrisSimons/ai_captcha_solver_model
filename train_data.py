@@ -44,7 +44,7 @@ def get_train_data():
     for file in get_files('./captcha'):
         """loop through the files in the captcha directory"""
         print(f"Processing {file}")
-        hash_value = file.split(".png")[0][4:]
+        hash_value = file.split(".png")[0][:]
         is_vaild = True
         start = time.perf_counter()
         while is_vaild:
