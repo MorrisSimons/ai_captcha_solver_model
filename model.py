@@ -2,6 +2,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+import config
+
 """More info on torch https://pytorch.org/docs/stable/nn.html"""
 
 class CaptchaModel(nn.Module):
@@ -34,7 +36,7 @@ class CaptchaModel(nn.Module):
         x, _ = self.lstm(x)
         x = self.output(x)
         x = x.permute(1, 0, 2)
-        
+
         """https://pytorch.org/docs/stable/nn.html#loss-functions"""
         if targets is not None:
             log_probs = F.log_softmax(x, 2)
@@ -51,6 +53,6 @@ class CaptchaModel(nn.Module):
         return x, None
 
 if __name__ == "__main__":
-    cm = CaptchaModel(num_chars=19)
-    img = torch.rand(1, 3, 100, 300)
+    cm = CaptchaModel(num_chars=config.NUM_CHARACTERS)
+    img = torch.rand(1, 3, config.IMAGE_HEIGHT, config.IMAGE_WIDTH)
     x, _ = cm(img, torch.rand((1, 5)))

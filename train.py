@@ -57,9 +57,9 @@ def run_training():
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
-
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
+    #print(len(lbl_enc.classes_))
     targets_enc = [lbl_enc.transform(x) for x in targets]
     targets_enc = np.array(targets_enc)
     targets_enc = targets_enc + 1
@@ -105,6 +105,7 @@ def run_training():
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, factor=0.8, patience=5, verbose=True
     )
+    # for the training loop
     for epoch in range(config.EPOCHS):
         train_loss = engine.train_fn(model, train_loader, optimizer)
         valid_preds, test_loss = engine.eval_fn(model, test_loader)
@@ -120,7 +121,6 @@ def run_training():
             f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss} Accuracy={accuracy}"
         )
         scheduler.step(test_loss)
-
 
 if __name__ == "__main__":
     run_training()
