@@ -2,7 +2,9 @@ import os
 import glob
 import torch
 from torch import nn
+from datetime import datetime
 import numpy as np
+
 
 import albumentations
 from sklearn import preprocessing
@@ -10,7 +12,7 @@ from sklearn import model_selection
 from sklearn import metrics
 from tensorflow import keras
 
-import config
+import Garbagecan.config as config
 import dataset
 import engine
 from model import CaptchaModel
@@ -138,7 +140,8 @@ def run_training():
         )
         scheduler.step(test_loss)
         if epoch == 100:
-            torch.save(model.state_dict(), f"model_{epoch}.pt")
+            date = datetime.today().strftime('%Y-%m-%d %H:%M:')
+            torch.save(model.state_dict(), f"model_{epoch}_{date}.pt")
             break
 
 if __name__ == "__main__":

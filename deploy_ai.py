@@ -10,7 +10,7 @@ from sklearn import model_selection
 from sklearn import metrics
 from tensorflow import keras
 
-import config
+import Garbagecan.config as config
 import dataset
 import engine
 import train

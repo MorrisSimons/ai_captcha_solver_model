@@ -91,8 +91,7 @@ def get_train_data(worker):
 def multi_threading():
     import threading
     threads = []
-    for worker in range(1,21):
-        time.sleep(1.5)
+    for worker in range(os.cpu_count()):
         thread = threading.Thread(target=get_train_data, args=(worker,))
         thread.start()
         threads.append(thread)
