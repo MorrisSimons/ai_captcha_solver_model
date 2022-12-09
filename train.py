@@ -64,7 +64,6 @@ def run_training():
     targets_enc = [lbl_enc.transform(x) for x in targets]
     targets_enc = np.array(targets_enc)
     targets_enc = targets_enc + 1
-
     (
         train_imgs,
         test_imgs,
@@ -100,10 +99,11 @@ def run_training():
     )
 
     model = CaptchaModel(num_chars=len(lbl_enc.classes_))
-    if input("[Y/N] to load model") == "Y":
+    if input("[Y/N] to load model: ").upper() == "Y":
         name = input("Enter model name: ")
-        model = torch.load(f"{name}.pt")
-        
+        model.load_state_dict(torch.load(f"{name}.pt"))
+        model.eval()
+
     model.to(config.DEVICE)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
@@ -129,10 +129,10 @@ def run_training():
             f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss} Accuracy={accuracy}"
         )
         scheduler.step(test_loss)
-        if epoch == 50:
+        if epoch == 100:
             torch.save(model.state_dict(), f"model_{epoch}.pt")
+            break
 
-    
 
 if __name__ == "__main__":
     run_training()
