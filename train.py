@@ -12,7 +12,7 @@ from sklearn import model_selection
 from sklearn import metrics
 from tensorflow import keras
 
-import Garbagecan.config as config
+import config
 import dataset
 import engine
 from model import CaptchaModel
