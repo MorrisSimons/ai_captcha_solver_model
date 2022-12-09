@@ -2,7 +2,7 @@ import os
 import time
 import itertools
 import string
-import Garbagecan.config as config
+import config as config
 import hashlib
 
 def get_files(path):
