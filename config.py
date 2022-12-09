@@ -13,4 +13,4 @@ SHOW_TEST_SAMPLES = 20
 #Engine config
 NUM_CHARACTERS = 36
 #Universal config
-DATA_DIR = "./training"
+DATA_DIR = "./test_data/"

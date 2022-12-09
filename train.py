@@ -135,6 +135,5 @@ def run_training():
             torch.save(model.state_dict(), f"model_{epoch}.pt")
             break
 
-
 if __name__ == "__main__":
     run_training()
