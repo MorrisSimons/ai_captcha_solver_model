@@ -24,8 +24,8 @@ def send_discord_img(img, value, operation_time):
 def get_train_data():
     for file in get_files(config.UNLABELD_DIR):
         """loop through the files in the captcha directory"""
-        print(f"Processing {file}")
-        hash_value = file.split(".png")[0][:] #get the hash value from file name
+        print(f"[Prossesning]: {file}")
+        hash_value = file.split(".png")[0][4:] #get the hash value from file name
         start = time.perf_counter()
         for guess in itertools.product(string.ascii_lowercase + string.digits, repeat=5):
             unhashed_guess = ''.join(guess)
