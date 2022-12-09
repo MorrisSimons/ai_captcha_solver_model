@@ -1,7 +1,7 @@
 
 from tqdm import tqdm
 import torch
-import Garbagecan.config as config
+import config as config
 
 def train_fn(model, data_loader, optimizer):
     model.train()

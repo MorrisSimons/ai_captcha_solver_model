@@ -15,7 +15,6 @@ class ClassificationDataset:
         self.image_paths = image_paths
         self.targets = targets
         self.resize = resize
-
         mean = (0.485, 0.456, 0.406)
         std = (0.229, 0.224, 0.225)
         self.aug = albumentations.Compose(

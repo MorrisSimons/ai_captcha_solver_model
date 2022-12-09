@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-import Garbagecan.config as config
+import config as config
 
 """More info on torch https://pytorch.org/docs/stable/nn.html"""
 
