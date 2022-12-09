@@ -9,7 +9,7 @@ IMAGE_HEIGHT = 100
 NUM_WORKERS = 2
 EPOCHS = 101
 DEVICE = "cuda"
-SHOW_TEST_SAMPLES = ""
+SHOW_TEST_SAMPLES = 20
 #Engine config
 NUM_CHARACTERS = 36
 #Universal config

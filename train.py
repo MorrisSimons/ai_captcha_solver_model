@@ -99,8 +99,10 @@ def run_training():
     )
 
     model = CaptchaModel(num_chars=len(lbl_enc.classes_))
+    e_start = 0
     if input("[Y/N] to load model: ").upper() == "Y":
         name = input("Enter model name: ")
+        e_start = int(name.split("_")[1])
         model.load_state_dict(torch.load(f"{name}.pt"))
         model.eval()
 
@@ -111,7 +113,7 @@ def run_training():
         optimizer, factor=0.8, patience=5, verbose=True
     )
     # for the training loop
-    for epoch in range(config.EPOCHS):
+    for epoch in range(e_start, config.EPOCHS):
         train_loss = engine.train_fn(model, train_loader, optimizer)
         valid_preds, test_loss = engine.eval_fn(model, test_loader)
         valid_captcha_preds = []
@@ -120,9 +122,9 @@ def run_training():
             valid_captcha_preds.extend(current_preds)
         combined = list(zip(test_targets_orig, valid_captcha_preds))
         if config.SHOW_TEST_SAMPLES != "":
-            batch = f":{config.SHOW_TEST_SAMPLES}"
-            print(combined[batch])
-        print(combined)
+            print(combined[:config.SHOW_TEST_SAMPLES])
+        else:
+            print(combined)
         test_dup_rem = [remove_duplicates(c) for c in test_targets_orig]
         accuracy = metrics.accuracy_score(test_dup_rem, valid_captcha_preds)
         print(
