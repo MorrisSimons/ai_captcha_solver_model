@@ -16,8 +16,6 @@ import engine
 import train
 from model import CaptchaModel
 
-
-
 def run_deployment():
     """to run the deployment of the model"""
     image_files = glob.glob(os.path.join(config.DEPLOYMENT_DATA, "*.png"))
@@ -63,9 +61,6 @@ def run_deployment():
     model.to(config.DEVICE)
     predictions = engine.predict_fn(model, deployment_loader)
     print(predictions)
-
-
-
 
 if __name__ == "__main__":
     run_deployment()

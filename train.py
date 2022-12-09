@@ -101,11 +101,17 @@ def run_training():
     model = CaptchaModel(num_chars=len(lbl_enc.classes_))
     e_start = 0
     if input("[Y/N] to load model: ").upper() == "Y":
-        name = input("Enter model name: ")
-        e_start = int(name.split("_")[1])
-        model.load_state_dict(torch.load(f"{name}.pt"))
-        model.eval()
-
+        while True:
+            name = input("Enter model name or [s to skip]: ")
+            if name.lower() == "s":
+                break
+            try:
+                e_start = int(name.split("_")[1])
+                model.load_state_dict(torch.load(f"{name}.pt"))
+                model.eval()
+                break
+            except:
+                print("Model not found")
     model.to(config.DEVICE)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
