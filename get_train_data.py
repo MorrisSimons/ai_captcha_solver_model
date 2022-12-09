@@ -31,8 +31,7 @@ def get_train_data():
             unhashed_guess = ''.join(guess)
             ai_hashed_guess = hashlib.sha1(unhashed_guess.encode()).hexdigest()
             if ai_hashed_guess == hash_value: #if hash values match
-                os.rename(f"{config.UNLABELD_DIR}{file}", f"{config.UNLABELD_DIR}{unhashed_guess}_{hash_value}.png") #relabel the file
-                os.rename(f"{config.UNLABELD_DIR}{unhashed_guess}_{hash_value}.png", f"{config.DATA_DIR}{unhashed_guess}_{hash_value}.png") #move the file
+                os.rename(f"{config.UNLABELD_DIR}{file}", f"{config.DATA_DIR}{unhashed_guess}_{hash_value}.png") #relabel the file and move file
                 print(f"[+] New data added {unhashed_guess}_{hash_value}.png")
                 end = time.perf_counter() - start
                 print(f"Time taken: {end:.4f}s")
