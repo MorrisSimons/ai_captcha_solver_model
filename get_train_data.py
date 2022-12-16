@@ -2,7 +2,7 @@ import os
 import time
 import itertools
 import string
-import config as config
+import configfordatatrainer as config
 import hashlib
 
 def get_files(path):
@@ -31,7 +31,7 @@ def get_train_data():
             unhashed_guess = ''.join(guess)
             
             hashed_guess = hashlib.sha1(unhashed_guess.encode()).hexdigest()
-            print(f"Guess: {unhashed_guess} Hash: {hashed_guess}")
+            #print(f"Guess: {unhashed_guess} Hash: {hashed_guess}")
             if hashed_guess == hash_value: #if hash values match
                 os.rename(f"{config.UNLABELD_DIR}{file}", f"{config.DATA_DIR}{unhashed_guess}_{hash_value}.png") #relabel the file and move file
                 print(f"[+] New data added {unhashed_guess}_{hash_value}.png")

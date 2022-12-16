@@ -114,6 +114,8 @@ def run_training():
                 break
             except:
                 print("Model not found")
+    else:
+        print("Starting from scratch!")
     model.to(config.DEVICE)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
@@ -139,6 +141,10 @@ def run_training():
             f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss} Accuracy={accuracy}"
         )
         scheduler.step(test_loss)
+        if epoch == 50:
+            date = datetime.today().strftime('%Y-%m-%d %H:%M:')
+            torch.save(model.state_dict(), f"model_{epoch}_{date}.pt")
+
         if epoch == 100:
             date = datetime.today().strftime('%Y-%m-%d %H:%M:')
             torch.save(model.state_dict(), f"model_{epoch}_{date}.pt")
