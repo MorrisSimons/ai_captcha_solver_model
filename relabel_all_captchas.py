@@ -13,7 +13,7 @@ def get_answer(file):
     return answer
 
 def rename_file(file, answer):
-    os.rename(f"./test_data/{file}", f"./training/{answer}.png")
+    os.rename(f"./test_data/{file}", f"./test_data/{answer}.png")
 
 def loop_through_files():
     for file in get_files('./test_data/'):

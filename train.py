@@ -143,7 +143,7 @@ def run_training():
         scheduler.step(test_loss)
         if epoch == 50:
             date = datetime.today().strftime('%Y-%m-%d %H:%M:')
-            torch.save(model.state_dict(), f"model_{epoch}_{date}.pt")
+            torch.save(model.state_dict(), f"model_1_{epoch}.pt")
 
         if epoch == 100:
             date = datetime.today().strftime('%Y-%m-%d %H:%M:')
