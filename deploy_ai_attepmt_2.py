@@ -3,6 +3,7 @@ import glob
 import torch
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 from sklearn import preprocessing
 import config as config
 from model import CaptchaModel
@@ -88,7 +89,11 @@ def deploy_ai():
         current_preds = decode_predictions(vp, lbl_enc)
         valid_capthca_preds.extend(current_preds)
     print(valid_capthca_preds)
-
+    for count, img in enumerate(image_files):
+        image = Image.open(img)
+        plt.imshow(image)
+        plt.title(f"Predicted: {valid_capthca_preds[count]}")
+        plt.show()
 
 if __name__ == "__main__":
     deploy_ai()
