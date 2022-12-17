@@ -2,7 +2,7 @@ import os
 import time
 import itertools
 import string
-import configfordatatrainer as config
+import config
 import hashlib
 
 def get_files(path):

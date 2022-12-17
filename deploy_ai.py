@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-import config as config
+import config
 from model import CaptchaModel
 
 import dataset
@@ -42,7 +42,6 @@ def decode_predictions(preds, encoder):
         tp = "".join(temp).replace("§", "")
         cap_preds.append(remove_duplicates(tp))
     return cap_preds
-
 
 def deploy_ai():
     from tqdm import tqdm

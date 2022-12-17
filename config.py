@@ -10,6 +10,7 @@ NUM_WORKERS = 2
 EPOCHS = 101
 DEVICE = "cuda"
 SHOW_TEST_SAMPLES = 20
+MODELVERSION = 1
 #Engine config
 NUM_CHARACTERS = 36
 #Universal config
