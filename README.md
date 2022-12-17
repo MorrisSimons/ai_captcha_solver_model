@@ -39,6 +39,12 @@ Run relabel all captchas to get only answer and remove the old hash value
   - cuda and nividia gpu needed for this ai
   - show test samples, "" for all
   - DATA_DIR for where to get data.
+  - Modelversion = version name on your model "model_{modelversion}_{epoch}.pt"
+  
+- open train
+  - line 49 is sensetive for length of filename
+  - line 108 to change learning rate
+  - e-start on line 98 will get epoch of model (model_"verson"_"50")
  
 ## Deploy ai
 - open config
