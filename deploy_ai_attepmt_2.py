@@ -50,8 +50,6 @@ def deploy_ai():
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
-    for target in targets:
-        print(target)
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
     targets_enc = [lbl_enc.transform(x) for x in targets]
@@ -64,14 +62,12 @@ def deploy_ai():
     model.eval()
     model.to(config.DEVICE)
 
-    #loop through image files
-    predictions = []
     # Create an instance of the ClassificationDataset class
     live_dataset = dataset.ClassificationDataset(image_files, targets = targets_enc, resize=(config.IMAGE_HEIGHT, config.IMAGE_WIDTH))
     live_loader = torch.utils.data.DataLoader(
         live_dataset,
         batch_size=config.BATCH_SIZE,
-        shuffle=True,
+        shuffle=False,
         num_workers=config.NUM_WORKERS
     )
     # Loop through the images in the dataset
@@ -86,7 +82,9 @@ def deploy_ai():
     for vp in fin_preds:
         current_preds = decode_predictions(vp, lbl_enc)
         valid_capthca_preds.extend(current_preds)
-    print(valid_capthca_preds)
+    #print(valid_capthca_preds)
+    combined = list(zip(targets_orig, valid_capthca_preds))
+    print(combined)
 
 if __name__ == "__main__":
     deploy_ai()
