@@ -28,7 +28,7 @@ consist of cap_[SHA1_hashvalue]
   - to edit name on file line 28 hash_value = file.split(".png")[0][4:] look up for example on filename
   
 Run relabel_all_captchas to get only answer and remove the old hash value
-  - files names need to be only the answer my case, fempv
+  - files names need to be only the answer my case, fempv.png
 
 ## Traning data
 - open config
