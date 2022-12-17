@@ -5,7 +5,6 @@ from torch import nn
 from datetime import datetime
 import numpy as np
 
-
 import albumentations
 from sklearn import preprocessing
 from sklearn import model_selection
@@ -76,7 +75,7 @@ def run_training():
     ) = model_selection.train_test_split(
         image_files, targets_enc, targets_orig, test_size=0.1, random_state=42
     )
-
+    print(train_targets.shape)
     train_dataset = dataset.ClassificationDataset(
         image_paths=train_imgs,
         targets=train_targets,
@@ -99,7 +98,6 @@ def run_training():
         num_workers=config.NUM_WORKERS,
         shuffle=False,
     )
-
     model = CaptchaModel(num_chars=len(lbl_enc.classes_))
     e_start = 0
     if input("[Y/N] to load model: ").upper() == "Y":

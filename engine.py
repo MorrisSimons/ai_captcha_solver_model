@@ -29,3 +29,4 @@ def eval_fn(model, data_loader):
         fin_loss += loss.item()
         fin_preds.append(batch_preds)
     return fin_preds, fin_loss / len(data_loader)
+
