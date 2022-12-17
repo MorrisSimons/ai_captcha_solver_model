@@ -1,15 +1,10 @@
 import os
 import glob
 import torch
-from torch import nn
-from datetime import datetime
 import numpy as np
-
-import albumentations
 from sklearn import preprocessing
 from sklearn import model_selection
 from sklearn import metrics
-from tensorflow import keras
 
 import config
 import dataset
@@ -51,17 +46,11 @@ def decode_predictions(preds, encoder):
 
 def run_training():
     image_files = glob.glob(os.path.join(config.DATA_DIR, "*.png"))
-    """The glob module finds all the pathnames matching a specified pattern according
-    to the rules used by the Unix shell, although results are returned in arbitrary order.
-    No tilde expansion is done, but *, ?, and character ranges expressed with []
-    will be correctly matched. This is done by using the os.scandir() and fnmatch.fnmatch()
-    functions in concert, and not by actually invoking a subshell."""
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
-    #print(len(lbl_enc.classes_))
     targets_enc = [lbl_enc.transform(x) for x in targets]
     targets_enc = np.array(targets_enc)
     targets_enc = targets_enc + 1
@@ -106,7 +95,7 @@ def run_training():
             if name.lower() == "s":
                 break
             try:
-                e_start = int(name.split("_")[1])
+                e_start = int(name.split("_")[2])
                 model.load_state_dict(torch.load(f"{name}.pt"))
                 model.eval()
                 break
@@ -140,12 +129,10 @@ def run_training():
         )
         scheduler.step(test_loss)
         if epoch == 50:
-            date = datetime.today().strftime('%Y-%m-%d %H:%M:')
-            torch.save(model.state_dict(), f"model_1_{epoch}.pt")
+            torch.save(model.state_dict(), f"model_{config.MODELVERSION}_{epoch}.pt")
 
         if epoch == 100:
-            date = datetime.today().strftime('%Y-%m-%d %H:%M:')
-            torch.save(model.state_dict(), f"model_{epoch}_{date}.pt")
+            torch.save(model.state_dict(), f"model_{config.MODELVERSION}_{epoch}_.pt")
             break
 
 if __name__ == "__main__":

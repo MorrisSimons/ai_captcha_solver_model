@@ -1,7 +1,5 @@
-
 from tqdm import tqdm
-import torch
-import config as config
+import config
 
 def train_fn(model, data_loader, optimizer):
     model.train()

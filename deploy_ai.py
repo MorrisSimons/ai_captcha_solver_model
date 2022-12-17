@@ -3,9 +3,11 @@ import glob
 import torch
 import numpy as np
 from PIL import Image
-
-import config as config
+import matplotlib.pyplot as plt
+from sklearn import preprocessing
+import config
 from model import CaptchaModel
+
 import dataset
 
 def remove_duplicates(x):
@@ -42,32 +44,55 @@ def decode_predictions(preds, encoder):
     return cap_preds
 
 def deploy_ai():
-    image_folder = "./test_data"
+    from tqdm import tqdm
+    #get images
+    image_files = glob.glob(os.path.join(config.DEPLOYMENT_FILE, "*.png"))
+    targets_orig = [x.split("/")[-1][9:12] for x in image_files]
+    targets = [[c for c in x] for x in targets_orig]
+    targets_flat = []
+    with open ("classes.txt", "r") as f:
+        classes = f.read()
+    for items in classes:
+        targets_flat.append(items)
+    
+    #print(targets_flat)
+    lbl_enc = preprocessing.LabelEncoder()
+    lbl_enc.fit(targets_flat)
+    targets_enc = [lbl_enc.transform(x) for x in targets]
+    targets_enc = np.array(targets_enc)
+    targets_enc = targets_enc + 1
+    #get model and load it
     model = CaptchaModel(num_chars=config.NUM_CHARACTERS)
-    # Load the model's state dict and set it to eval mode
     model.load_state_dict(torch.load('model_1_50.pt'))
     model.eval()
-    # Get a list of image files in the image folder
-    image_files = glob.glob(os.path.join(image_folder, "*.png"))
-    # Load and preprocess the images
+    model.to(config.DEVICE)
 
-    data_set = dataset.ClassificationDataset(
-        image_paths=image_files,
-        targets=[1]*len(image_files),
-        resize=(config.IMAGE_HEIGHT, config.IMAGE_WIDTH)
+    # Create an instance of the ClassificationDataset class
+    live_dataset = dataset.ClassificationDataset(image_files, targets=targets_enc, resize=(config.IMAGE_HEIGHT, config.IMAGE_WIDTH))
+    live_loader = torch.utils.data.DataLoader(
+        live_dataset,
+        batch_size=config.BATCH_SIZE,
+        shuffle=False,
+        num_workers=config.NUM_WORKERS
     )
-    images = []
-    for image_data in data_set:
-        image_file = image_data["images"]
-        image = image_data["targets"]
+    # Loop through the images in the dataset
+    fin_preds = []
+    tk0 = tqdm(live_loader, total=len(live_loader))
+    for data in tk0:
+        for key, value in data.items():
+            data[key] = value.to(config.DEVICE)
+        batch_preds, _ = model(**data)
+        fin_preds.append(batch_preds)
+    valid_capthca_preds = []
+    for vp in fin_preds:
+        current_preds = decode_predictions(vp, lbl_enc)
+        valid_capthca_preds.extend(current_preds)
+    print(valid_capthca_preds)
+    for count, img in enumerate(image_files):
+        image = Image.open(img)
+        plt.imshow(image)
+        plt.title(f"Predicted: {valid_capthca_preds[count]}")
+        plt.show()
 
-    for image_file, image in data_set:
-        images.append(image)
-    print(images)
-    images = torch.stack(images).to(config.DEVICE)
-
-    outputs = model(images)
-    for image_file, output in zip(image_files, outputs):
-        output_str = decode_predictions(output)
-        print(f"Prediction for {image_file}: {output_str}")
-deploy_ai()
+if __name__ == "__main__":
+    deploy_ai()

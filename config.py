@@ -1,5 +1,5 @@
 #Ai training config
-DICSWEBHOOKAICHAT = "https://discord.com/api/webhooks/1049452576233500733/0RH04CSndynT4fv8ONAF3glEiTPSenCW_R40MNTuNYjBVCY_4TnDoIOb05XpphVm2NWM"
+DICSWEBHOOKAICHAT = ""
 UNLABELD_DIR = "./captcha/"
 LOGTIME = True
 #AI MODEL CONFIG
@@ -10,6 +10,7 @@ NUM_WORKERS = 2
 EPOCHS = 101
 DEVICE = "cuda"
 SHOW_TEST_SAMPLES = 20
+MODELVERSION = 1
 #Engine config
 NUM_CHARACTERS = 36
 #Universal config
