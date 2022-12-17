@@ -85,6 +85,7 @@ def deploy_ai():
     #print(valid_capthca_preds)
     combined = list(zip(targets_orig, valid_capthca_preds))
     print(combined)
+    
 
 if __name__ == "__main__":
     deploy_ai()
