@@ -16,3 +16,4 @@ NUM_CHARACTERS = 36
 DATA_DIR = "./training/"
 #Deplyment config
 DEPLOYMENT_DATA = "./testdata/"
+DEPLOYMENT_FILE = "./oneftest/"

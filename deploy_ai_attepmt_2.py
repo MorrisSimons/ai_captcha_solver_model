@@ -49,12 +49,20 @@ def deploy_ai():
     image_files = glob.glob(os.path.join(config.DEPLOYMENT_DATA, "*.png"))
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
-    targets_flat = [c for clist in targets for c in clist]
+    print(targets)
+    targets_flat = []
+    with open ("classes.txt", "r") as f:
+        classes = f.read()
+    for items in classes:
+        targets_flat.append(items)
+    #print(targets_flat)
+    input("Press Enter to continue...")
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
     targets_enc = [lbl_enc.transform(x) for x in targets]
     targets_enc = np.array(targets_enc)
     targets_enc = targets_enc + 1
+
 
     #get model and load it
     model = CaptchaModel(num_chars=config.NUM_CHARACTERS)
@@ -85,7 +93,7 @@ def deploy_ai():
     #print(valid_capthca_preds)
     combined = list(zip(targets_orig, valid_capthca_preds))
     print(combined)
-    
+
 
 if __name__ == "__main__":
     deploy_ai()
