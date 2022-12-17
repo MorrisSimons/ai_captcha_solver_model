@@ -47,23 +47,19 @@ def deploy_ai():
     from tqdm import tqdm
     #get images
     image_files = glob.glob(os.path.join(config.DEPLOYMENT_DATA, "*.png"))
-    targets_orig = [x.split("/")[-1][9:14] for x in image_files]
+    targets_orig = [x.split("/")[-1][9:12] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
-    print(targets)
     targets_flat = []
     with open ("classes.txt", "r") as f:
         classes = f.read()
     for items in classes:
         targets_flat.append(items)
     #print(targets_flat)
-    input("Press Enter to continue...")
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
     targets_enc = [lbl_enc.transform(x) for x in targets]
     targets_enc = np.array(targets_enc)
     targets_enc = targets_enc + 1
-
-
     #get model and load it
     model = CaptchaModel(num_chars=config.NUM_CHARACTERS)
     model.load_state_dict(torch.load('model_1_50.pt'))
@@ -71,7 +67,7 @@ def deploy_ai():
     model.to(config.DEVICE)
 
     # Create an instance of the ClassificationDataset class
-    live_dataset = dataset.ClassificationDataset(image_files, targets = targets_enc, resize=(config.IMAGE_HEIGHT, config.IMAGE_WIDTH))
+    live_dataset = dataset.ClassificationDataset(image_files, targets=targets_enc, resize=(config.IMAGE_HEIGHT, config.IMAGE_WIDTH))
     live_loader = torch.utils.data.DataLoader(
         live_dataset,
         batch_size=config.BATCH_SIZE,
@@ -90,9 +86,7 @@ def deploy_ai():
     for vp in fin_preds:
         current_preds = decode_predictions(vp, lbl_enc)
         valid_capthca_preds.extend(current_preds)
-    #print(valid_capthca_preds)
-    combined = list(zip(targets_orig, valid_capthca_preds))
-    print(combined)
+    print(valid_capthca_preds)
 
 
 if __name__ == "__main__":
