@@ -1,4 +1,4 @@
-# ai_model
+# Morris Simons Ai captcha solving model
 
 ## Labeling the data.
 
