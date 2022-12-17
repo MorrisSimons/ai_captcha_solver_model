@@ -15,4 +15,4 @@ NUM_CHARACTERS = 36
 #Universal config
 DATA_DIR = "./training/"
 #Deplyment config
-DEPLOYMENT_DATA = "./test_data/"
+DEPLOYMENT_DATA = "./testdata/"

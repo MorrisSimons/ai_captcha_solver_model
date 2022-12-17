@@ -46,12 +46,12 @@ def decode_predictions(preds, encoder):
 def deploy_ai():
     from tqdm import tqdm
     #get images
-    image_folder = "./test_data"
-    image_files = glob.glob(os.path.join(image_folder, "*.png"))
-
+    image_files = glob.glob(os.path.join(config.DEPLOYMENT_DATA, "*.png"))
     targets_orig = [x.split("/")[-1][9:14] for x in image_files]
     targets = [[c for c in x] for x in targets_orig]
     targets_flat = [c for clist in targets for c in clist]
+    for target in targets:
+        print(target)
     lbl_enc = preprocessing.LabelEncoder()
     lbl_enc.fit(targets_flat)
     targets_enc = [lbl_enc.transform(x) for x in targets]
