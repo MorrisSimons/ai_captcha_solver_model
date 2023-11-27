@@ -5,8 +5,7 @@
 brute forceing for auto labeling the dataset
 * how many records in log: 1247
 * this is avg time: 26.59 sec
-* the amount of max combinations when brutforceing: 60,466,176(36**5)
-* 100% accuracy
+* the amount of max combinations when brutforceing: nPr = (36, 5) = 45,239,040 
 
 ![cap_1a24d34f483f556e09a850faf9c36932d5bb6ce5](https://user-images.githubusercontent.com/38280463/208228831-4c6ce442-edb5-464a-b668-1f116d046666.png)
 
