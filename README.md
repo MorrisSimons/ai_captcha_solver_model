@@ -1,5 +1,4 @@
 # Morris Simons Ai captcha solving model
-- N1ghtmare1 is the old name of my github account (Gaming name) - Morris Simons
 ## Labeling the data.
 
 brute forceing for auto labeling the dataset
